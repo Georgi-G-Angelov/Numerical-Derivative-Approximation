@@ -14,6 +14,7 @@ actualValue = 3
 hlist = []
 lists = [[],[],[]]
 errors = [[],[],[]]
+logErrors = [[],[],[]]
 approximations = [[],[],[]]
 
 #------------- Calculation approximations and errors --------------
@@ -24,7 +25,8 @@ for i in range(1,11):
     approximations[2] = approximation(f(1+h), f(1-h), 2*h)
     for j in range(3):
         lists[j].append(approximations[j])
-        errors[j].append(math.log(abs(approximations[j] - actualValue)))
+        logErrors[j].append(math.log(abs(approximations[j] - actualValue)))
+        errors[j].append(abs(approximations[j] - actualValue))
 
     hlist.append(math.log(h))
 
@@ -34,11 +36,15 @@ for j in range(3):
     for i in range(len(lists[j])):
         print lists[j][i]
 
+for j in range(3):
+    print ("error" + str(j+1) + ":")
+    for i in range(len(errors[j])):
+        print errors[j][i]
 
 for j in range(3):
     print ("log(error" + str(j+1) + "):")
-    for i in range(len(errors[j])):
-        print errors[j][i]
+    for i in range(len(logErrors[j])):
+        print logErrors[j][i]
 
 print "log(h):"
 for i in range(len(hlist)):
@@ -46,14 +52,14 @@ for i in range(len(hlist)):
 
 # ------------ Plotting ------------
 plt.xlim(0,9)
-plt.plot(hlist, label='log(h)')
-plt.xlabel('n')
+#plt.plot(hlist, label='log(h)')
+plt.xlabel('log(h)')
 plt.ylabel('log(x)')
 
 
 for i in range(3):
-    plt.plot(errors[i], label = 'log(error'+str(i+1)+')')
-    plt.xlabel('n')
+    plt.plot(logErrors[i], label = 'log(error'+str(i+1)+')')
+
 
 plt.legend()
 plt.show()
